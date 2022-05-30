@@ -1,4 +1,5 @@
-﻿using DatabaseFirst_EF.Models;
+﻿using DatabaseFirst_EF.CustomModels;
+using DatabaseFirst_EF.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,7 @@ namespace DatabaseFirst_EF.Controllers
             };
             await dbContext.AddAsync(data);
             bool result = await dbContext.SaveChangesAsync() > 0;
-
-            return Ok(result);
+             return Ok(result);
         }
         [HttpGet]
         public async Task<IActionResult> GetStudents()

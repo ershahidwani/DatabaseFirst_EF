@@ -1,4 +1,5 @@
 ﻿using System;
+using DatabaseFirst_EF.CustomModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -10,7 +11,6 @@ namespace DatabaseFirst_EF.Models
     {
         public SAMPLEDBContext()
         {
-
         }
 
         public SAMPLEDBContext(DbContextOptions<SAMPLEDBContext> options)
@@ -18,7 +18,8 @@ namespace DatabaseFirst_EF.Models
         {
         }
 
-        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Mark> Marks { get; set; }
+       public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -33,6 +34,26 @@ namespace DatabaseFirst_EF.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<Mark>(entity =>
+            {
+                entity.HasKey(e => e.Rollno)
+                    .HasName("PK__MARKS__00AB72B7060DEAE8");
+
+                entity.ToTable("MARKS");
+
+                entity.Property(e => e.Rollno)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ROLLNO");
+
+                entity.Property(e => e.Totalmarks).HasColumnName("TOTALMARKS");
+
+                entity.HasOne(d => d.RollnoNavigation)
+                    .WithOne(p => p.Mark)
+                    .HasForeignKey<Mark>(d => d.Rollno)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MARKS_Student");
+            });
 
             modelBuilder.Entity<Student>(entity =>
             {

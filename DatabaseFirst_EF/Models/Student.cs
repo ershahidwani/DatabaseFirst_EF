@@ -12,5 +12,7 @@ namespace DatabaseFirst_EF.Models
         public string Course { get; set; }
         public string FathersName { get; set; }
         public string Address { get; set; }
+
+        public virtual Mark Mark { get; set; }
     }
 }
